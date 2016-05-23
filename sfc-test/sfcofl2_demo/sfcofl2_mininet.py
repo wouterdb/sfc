@@ -13,7 +13,7 @@ __status__ = "demo code"
 
 from mininet.cli import CLI
 from mininet.node import Controller, Host, RemoteController, OVSController
-from mininet.util import customConstructor
+from mininet.util import customClass
 from mininet.net import Mininet
 from mininet.topo import Topo
 from mininet.clean import cleanup
@@ -533,7 +533,7 @@ def insert_flows_by_cmd(flow_cmd):
 # Main
 #
 def main():
-    lg.setLogLevel('info')
+    lg.setLogLevel('debug')
 
     context = Context()
     if not get_cmd_line_args(context):
@@ -549,10 +549,10 @@ def main():
 
     # The SDN-remote_controller connection
     mySDNController = myNet.addController(context.remote_controller_name,
-                                       customConstructor({'remote': RemoteController},
+                                       customClass({'remote': RemoteController},
                                        context.remote_controller_args))
-    myLocalController = myNet.addController('c1', controller=OVSController)
-    myLocalController.start()
+#    myLocalController = myNet.addController('c1', controller=OVSController)
+#    myLocalController.start()
 
     dump_hosts(myNet)
 
@@ -562,7 +562,8 @@ def main():
     dumpNodes(myNet.values())
 
     #start_gateways(myNet)
-    start_switches(context, myNet, mySDNController, myLocalController)
+    #start_switches(context, myNet, mySDNController, myLocalController)
+    myNet.start()
 
     # Insert ovs-ofctl rules
     print 'Inserting flows into the switches...'
